@@ -1,0 +1,39 @@
+﻿@model IEnumerable<FamilyFinances.Models.PurchaseCategory>
+
+@{
+    ViewData["Title"] = "Категории";
+}
+
+<h2>Категории покупок</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Наименование
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => @item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @item.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Правка</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Детали</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Удалить</a>
+            </td>
+        </tr>
+    }
+</table>
+
+<p>
+    <a asp-action="Create">Добавить</a>
+</p>

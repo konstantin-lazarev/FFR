@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@model FamilyFinances.Models.Inpayment
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>@Localizer["Edit"]</h1>
+
+<h4>@Localizer["Inpayment"]</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="TimeStamp" class="control-label">Дата</label>
+                <input asp-for="TimeStamp" type="datetime" asp-format="{0:yyyy-MM-dd HH:mm:ss}" class="form-control" />
+                <span asp-validation-for="TimeStamp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sum" class="control-label"></label>
+                <input asp-for="Sum" class="form-control" />
+                <span asp-validation-for="Sum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Income" class="control-label"></label>
+                <input asp-for="Income" class="form-control" />
+                <span asp-validation-for="Income" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                @*<label class="form-check-label"></label>
+                <input class="form-check-input" asp-for="MonthlyIncome" />*@
+                <input asp-for="MonthlyIncome" class="form-check-input" />
+                <label asp-for="MonthlyIncome" class="control-label"></label>
+            </div>
+            <div class="form-group">
+                <label asp-for="PaySourceID" class="control-label"></label>
+                <select asp-for="PaySourceID" class="form-control" asp-items="ViewBag.PaySourceID"></select>
+                <span asp-validation-for="PaySourceID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value=@Localizer["Save"] class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">@Localizer["Back to List"]</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

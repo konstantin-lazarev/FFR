@@ -1,0 +1,122 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@using System.Globalization
+@using FamilyFinances.ViewModels
+@using FamilyFinances.Models
+@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>@Localizer["Expenses"]</h1>
+
+<p>
+    <a asp-action="Create">@Localizer["Add"]</a>
+</p>
+
+<form asp-action="Index" method="get">
+    <div class="row form-actions no-color">
+        <div class="col-md-4">
+            @Localizer["From"]:<br /><input type="text" name="SearchStartDateString" value="@ViewData["StartDateFilter"]" />
+        </div>
+        <div class="col-md-4">
+            @Localizer["To"]:<br /><input type="text" name="SearchEndDateString" value="@ViewData["EndDateFilter"]" />
+        </div>
+        <div class="col-md-4">
+            @Localizer["Current Month"]:<br /><input type="checkbox" name="SearchCurrentMonthString" checked="@ViewData["CurrentMonthFilter"]" />
+        </div>
+        <div class="col-md-4">
+            @Localizer["Purchase"]:<br /><input type="text" name="SearchPurchaseString" value="@ViewData["PurchaseFilter"]" />
+        </div>
+        <div class="col-md-4 form-group">
+            @Localizer["Paid By"]:
+            <select name="SearchPaySourceID" class="form-control" style="height: 37px; width: 180px" id="@ViewData["PaySourceID"]">
+                @foreach (PaySourceModel ps in Model.PaySources)
+                {
+                    <option value="@ps.ID" selected="@ps.Selected">@ps.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4 form-group">
+            @Localizer["Category"]:
+            <select name="SearchCategoryID" class="form-control" style="height: 37px; width: 180px" id="@ViewData["CategoryID"]">
+                @foreach (CategoryModel cat in Model.Categories)
+                {
+                    <option value = "@cat.ID" selected = "@cat.Selected" > @cat.Name </option >
+                }
+            </select>
+        </div>
+    </div>
+    <div class="row form-actions no-color">
+        <div class="col-md-4">
+            <input type = "submit" value=@Localizer["Select"] class="btn btn-group"  />
+            | <a asp-action="Index">@Localizer["Back to Full List"]</a>
+        </div>
+    </div>
+    <div class="row form-actions no-color">
+    </div>
+</form>
+
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Дата@*@Html.DisplayNameFor(model => model.TimeStamp)*@
+</th>
+<th>
+Покупка @*@Html.DisplayNameFor(model => model.Purchase)*@
+</th>
+<th>
+Сумма @*@Html.DisplayNameFor(model => model.Sum)*@
+</th>
+<th>
+Категория @*@Html.DisplayNameFor(model => model.Category.Name)*@
+</th>
+<th>
+Чем оплачено @*@Html.DisplayNameFor(model => model.PaySource.Name)*@
+</th>
+<th>
+Карта/Счет/Нал @*@Html.DisplayNameFor(model => model.PaySource.FullName)*@ @*Карта/Счет/Наличные*@
+            </th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Expenses)
+                        {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TimeStamp)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Purchase)
+                    </td>
+                    <td align="right">
+                        @Html.DisplayFor(modelItem => item.Sum)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaySource.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaySource.FullName)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ID">@Localizer["Edit"]</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID">@Localizer["Details"]</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">@Localizer["Delete"]</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+            </table>
+            <form asp-action="Index" method="get">
+                <label name="TotalString" style="font-weight: bold">@Localizer["Total"]:&nbsp;&nbsp;@ViewData["Total"]</label>
+            </form>
+

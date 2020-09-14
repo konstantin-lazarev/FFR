@@ -1,0 +1,178 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+
+@using System.Globalization
+@using FamilyFinances.ViewModels
+@using FamilyFinances.Models
+@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Состояние Family Finances";
+    var selectedDate = "";
+    var lastDate = "";
+}
+
+<h2>@Localizer["Current State"]</h2>
+
+<form asp-action="Main" method="get">
+    <div class="row form-actions no-color">
+
+        <div class="col-md-4 form-group">
+            @Localizer["Select current month start date:"]
+            <select name="SearchStartDateString" class="form-control" style="height: 37px; width: 180px" id="@ViewData["MonthID"]">
+                @foreach (InpaymentModel im in Model.Inpayments)
+                {
+                <option value="@im.ID" selected="@im.Selected">@im.MonthStart</option>
+                    @if (@im.Selected)
+                    {
+                        selectedDate = @im.MonthStart;
+                        lastDate = @im.MonthEnd;
+                    }
+                }
+            </select>
+        </div>
+
+    </div>
+    <div class="row form-actions no-color">
+        <div class="col-md-4">
+            <input type="submit" value=@Localizer["Select"] class="btn btn-group" />
+            | <a asp-action="Index">@Localizer["Back to About Page"]</a>
+        </div>
+    </div>
+    <div class="row form-actions no-color">
+    </div>
+</form>
+
+<br />
+
+<h5>@Localizer["By Pay Sources"]</h5>
+
+<table class="table">
+    <tr>
+        <th>
+            @Localizer["ID"]
+        </th>
+        <th>
+            @Localizer["Code"]
+        </th>
+        <th align="right">
+            @Localizer["Sum"]
+        </th>
+    </tr>
+
+    @foreach (var item in Model.PaySourceSummaries)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => @item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @item.Name)
+            </td>
+            <td align="right">
+                @Html.DisplayFor(modelItem => @item.Sum)
+            </td>
+            <td>
+                <a asp-controller="Expenses" asp-action="Index" asp-route-searchPaySourceID="@item.ID" asp-route-searchStartDateString="@selectedDate" asp-route-searchEndDateString="@lastDate">Детализация</a>
+            </td>
+        </tr>
+    }
+</table>
+<form asp-action="Index" method="get">
+    <label name="PaySourceTotal" style="font-weight: bold">@Localizer["Total"]:&nbsp;&nbsp;@ViewData["PaySourceTotal"]</label>
+</form>
+<br /><br />
+
+<h5>@Localizer["By Purchase Categories"]</h5>
+
+<table class="table">
+    <tr>
+        <th>
+            @Localizer["ID"]
+        </th>
+        <th>
+            @Localizer["Category"]
+        </th>
+        <th align="right">
+            @Localizer["Sum"]
+        </th>
+    </tr>
+
+    @foreach (var item in Model.CategorySummaries)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => @item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @item.Name)
+            </td>
+            <td align="right">
+                @Html.DisplayFor(modelItem => @item.Sum)
+            </td>
+            <td>
+                <a asp-controller="Expenses" asp-action="Index" asp-route-searchCategoryID="@item.ID" asp-route-searchStartDateString="@selectedDate" asp-route-searchEndDateString="@lastDate">Детализация</a>
+            </td>
+        </tr>
+    }
+</table>
+<form asp-action="Index" method="get">
+    <label name="CategoryTotal" style="font-weight: bold">@Localizer["Total"]:&nbsp;&nbsp;@ViewData["CategoryTotal"]</label>
+</form>
+<br /><br />
+
+@*<table class="table">
+    <tr>
+        <th>
+            Дата
+        </th>
+        <th>
+            Покупка
+        </th>
+        <th>
+            Сумма
+        </th>
+        <th>
+            Категория
+        </th>
+        <th>
+            Чем оплачено
+        </th>
+        <th>
+            Карта/Счет/Нал
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Expenses)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeStamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @item.Purchase)
+            </td>
+            <td align="right">
+                @Html.DisplayFor(modelItem => @item.Sum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @item.Category.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @item.PaySource.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => @item.PaySource.FullName)
+            </td>
+
+        </tr>
+    }
+</table>
+<form asp-action="Index" method="get">
+    <label name="TotalString" style="font-weight: bold">@Localizer["Total"]:&nbsp;&nbsp;@ViewData["Total"]</label>
+</form>*@
+
